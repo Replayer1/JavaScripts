@@ -151,39 +151,4 @@
   </body>
 </html>
 
-<!-- let app = new Vue({
-    el: "#zxc",
-    data: {
-      time: 0,
-      timeAfter: 0,
-      readyCheck: "",
-      intrval: null,
-      arr: [],
-    },
-    methods: {
-      start: function () {
-        console.log(this);
-        this.time = Math.floor(Math.random() * 6000) + 2000;
-        this.readyCheck = "Приготовтесть кликать!";
-        setTimeout(() => {
-          document.getElementById("appblockq").classList.add("click");
-          this.readyCheck = "Кликайте!";
-          this.intrval = setInterval(() => {
-            this.timeAfter = this.timeAfter + 7;
-            console.log(this.timeAfter);
-          }, 7);
-        }, this.time);
-      },
-      click: function () {
-        if (this.timeAfter > 0) {
-          clearInterval(this.intrval);
-          document.getElementById("appblockq").classList.remove("click");
-          this.readyCheck = "Вашь результат " + this.timeAfter + "мс !";
-          this.arr.push(this.timeAfter);
-          this.timeAfter = 0;
-          
-          //   console.log(app.arr)
-        }
-      },
-    },
   }); -->
