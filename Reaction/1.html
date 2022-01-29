@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>Document</title>
+  </head>
+
+  <body id="app">
+    <style>
+      @import url("https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap");
+      body {
+        padding: 0;
+        margin: 0;
+        overflow: hidden;
+        height: 100vh;
+        width: 100vw;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        font-family: "Press Start 2P", cursive;
+        background: rgb(27, 27, 27);
+        color: white;
+        -moz-user-select: -moz-none;
+        -o-user-select: none;
+        -khtml-user-select: none;
+        -webkit-user-select: none;
+        user-select: none;
+      }
+
+      .btnn {
+        background-color: white;
+        color: black;
+        border: 2px solid #555555;
+        transition-duration: 0.1s;
+        padding: 10px;
+        border: none;
+        border-radius: 4px;
+        font-family: "Press Start 2P", cursive;
+      }
+
+      .btnn:hover {
+        background-color: #555555;
+        color: white;
+      }
+
+      .disNO {
+        display: none;
+      }
+
+      .appblock {
+        background-color: #ff4c00;
+        height: 500px;
+        width: 100vw;
+        margin-bottom: 20px;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        align-items: center;
+        padding: 20px;
+      }
+
+      .click {
+        background: #00ae68;
+      }
+
+      .readyCheak {
+        background: #ff9d73;
+      }
+
+      .history {
+        position: absolute;
+        top: 20px;
+        right: 40px;
+      }
+    </style>
+
+    <div id="zxc">
+      <div class="appblock" id="appblockq" v-on:click="click">
+        <h1>{{readyCheck}}</h1>
+        <h2>{{endGame}}</h2>
+        <button class="btnn" id="btn" v-on:click="start">{{button}}</button>
+      </div>
+
+      <div class="history">
+        <h2>Ваши результаты:</h2>
+        <ol id="example-1">
+          <li v-for="item in arr" :key="item.message">{{ item }}</li>
+        </ol>
+      </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/vue@2"></script>
+    <script>
+      let app = new Vue({
+        el: "#zxc",
+        data: {
+          time: 0,
+          timeAfter: 0,
+          startq: 0,
+          button: "Проверить реакцию",
+          endGame: "",
+          endq: 0,
+          readyCheck: "",
+          intrval: null,
+          arr: [],
+        },
+        methods: {
+          start: function () {
+            if (this.arr.length == 5) {
+              this.readyCheck = "Спасибо за игру!";
+              document.getElementById("btn").classList.add("disNO");
+              function average() {
+                return app.arr.reduce((a, b) => a + b) / app.arr.length;
+              }
+              this.endGame =
+                "В среднем ваша реакция была - " + average() + "мс!";
+            } else {
+              document.getElementById("btn").classList.add("disNO");
+              this.button = "Проверить еще раз";
+              this.endGame = "СЮДА!";
+              this.time = Math.floor(Math.random() * 2000) + 1000;
+              document
+                .getElementById("appblockq")
+                .classList.remove("readyCheak");
+              this.readyCheck = "Приготовтесть кликать!";
+              setTimeout(() => {
+                this.startq = new Date().getTime();
+                document.getElementById("appblockq").classList.add("click");
+                this.readyCheck = "Кликайте!";
+              }, this.time);
+            }
+          },
+          click: function () {
+            if (this.startq !== 0) {
+              this.endq = new Date().getTime() - this.startq;
+              this.startq = 0;
+              this.endGame = "";
+              document.getElementById("appblockq").classList.remove("click");
+              document.getElementById("appblockq").classList.add("readyCheak");
+              document.getElementById("btn").classList.remove("disNO");
+              this.readyCheck = "Вашь результат " + this.endq + "мс !";
+              this.arr.push(this.endq);
+            }
+          },
+        },
+      });
+    </script>
+  </body>
+</html>
+
+<!-- let app = new Vue({
+    el: "#zxc",
+    data: {
+      time: 0,
+      timeAfter: 0,
+      readyCheck: "",
+      intrval: null,
+      arr: [],
+    },
+    methods: {
+      start: function () {
+        console.log(this);
+        this.time = Math.floor(Math.random() * 6000) + 2000;
+        this.readyCheck = "Приготовтесть кликать!";
+        setTimeout(() => {
+          document.getElementById("appblockq").classList.add("click");
+          this.readyCheck = "Кликайте!";
+          this.intrval = setInterval(() => {
+            this.timeAfter = this.timeAfter + 7;
+            console.log(this.timeAfter);
+          }, 7);
+        }, this.time);
+      },
+      click: function () {
+        if (this.timeAfter > 0) {
+          clearInterval(this.intrval);
+          document.getElementById("appblockq").classList.remove("click");
+          this.readyCheck = "Вашь результат " + this.timeAfter + "мс !";
+          this.arr.push(this.timeAfter);
+          this.timeAfter = 0;
+          
+          //   console.log(app.arr)
+        }
+      },
+    },
+  }); -->
